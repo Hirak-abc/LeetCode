@@ -1,7 +1,7 @@
 class Solution:
     def checkIfPrerequisite(self, numCourses, prerequisites, queries):
 
-        g = [[] for _ in range(numCourses)]
+        g = defaultdict(list)
 
         for a, b in prerequisites:
             g[a].append(b)
