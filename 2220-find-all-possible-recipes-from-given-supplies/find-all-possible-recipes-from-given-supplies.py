@@ -1,27 +1,41 @@
-class Solution:
+class Solution(object):
     def findAllRecipes(self, recipes, ingredients, supplies):
+
+        g = dict(zip(recipes, ingredients))
         have = set(supplies)
-        ing = dict(zip(recipes, ingredients))
         state = {}
+        ans = []
 
-        def dfs(r):
-            if r in have:
-                return True
-            if r not in ing:
-                return False
-            if state.get(r) == 1:
-                return False
-            if state.get(r) == 2:
+        def dfs(recipe):
+
+            if recipe in have:
                 return True
 
-            state[r] = 1
+            if state.get(recipe) == 1:
+                return False
 
-            for x in ing[r]:
-                if not dfs(x):
-                    return False
+            if state.get(recipe) == 2:
+                return True
 
-            state[r] = 2
-            have.add(r)
+            if state.get(recipe) == 3:
+                return False
+
+            state[recipe] = 1
+
+            for x in g[recipe]:
+
+                if x not in have:
+
+                    if x not in g or not dfs(x):
+                        state[recipe] = 3
+                        return False
+
+            state[recipe] = 2
+            have.add(recipe)
             return True
 
-        return [r for r in recipes if dfs(r)]
+        for recipe in recipes:
+            if dfs(recipe):
+                ans.append(recipe)
+
+        return ans
