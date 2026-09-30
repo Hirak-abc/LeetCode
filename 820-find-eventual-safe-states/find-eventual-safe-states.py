@@ -1,21 +1,34 @@
-class Solution:
+class Solution(object):
     def eventualSafeNodes(self, graph):
-        n = len(graph)
-        state = [0] * n
 
-        def dfs(u):
-            if state[u] == 1:
+        n = len(graph)
+        states = [0] * n
+        safe = []
+
+        def dfs(node):
+            # Currently in recursion path
+            if states[node] == 1:
                 return False
-            if state[u] == 2:
+
+            # Already determined
+            if states[node] == 2:
                 return True
 
-            state[u] = 1
+            if states[node] == 3:
+                return False
 
-            for v in graph[u]:
-                if not dfs(v):
+            states[node] = 1
+
+            for nei in graph[node]:
+                if not dfs(nei):
+                    states[node] = 3
                     return False
 
-            state[u] = 2
+            states[node] = 2
             return True
 
-        return [i for i in range(n) if dfs(i)]
+        for i in range(n):
+            if dfs(i):
+                safe.append(i)
+
+        return safe
