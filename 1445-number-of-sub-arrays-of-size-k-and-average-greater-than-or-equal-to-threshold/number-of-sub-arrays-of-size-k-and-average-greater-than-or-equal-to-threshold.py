@@ -9,7 +9,7 @@ class Solution(object):
         window_sum = sum(arr[:k])
         ans = 0
 
-        if window_sum >= k * threshold:
+        if window_sum/k >= threshold:
             ans += 1
 
         for i in range(k,len(arr)):
